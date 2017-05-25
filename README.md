@@ -1,10 +1,10 @@
 # DeepCloak: Masking Deep Neural Network Models for Robustness Against Adversarial Samples
 
-## Environment: Torch7 
+## Environment: Torch7 + CUDNN
 
-## Require package: CUDNN
+## Usage: 
 
-## Usage: th removenode.lua -model MODELADD -dataset DATASETADD -layernum LAYERNUM -std STD [-power POWER] [-gpu GPUNUM] 
+th removenode.lua -model MODELADD -dataset DATASETADD -layernum LAYERNUM -std STD [-power POWER] [-gpu GPUNUM] 
 
 MODELADD: address of the model file \n
 
