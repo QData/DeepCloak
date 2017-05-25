@@ -16,6 +16,6 @@ GPUNUM: number of GPU selected
 
 DATASETADD: address of the dataset file
 
-STD: the standard deviation of the dataset used in the whitening process
+STD: the standard deviation of the dataset used in the preprocessing, required in the Adversarial Sample Generation
 
 ## Dataset: Orginially from https://github.com/szagoruyko/wide-residual-networks
