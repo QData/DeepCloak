@@ -1,10 +1,10 @@
+--- Author: Zeming Lin ---
 local RandomMask, Parent = torch.class('nn.RandomMask', 'nn.Module')
 
 function RandomMask:__init(size, p)
     Parent.__init(self)
     self.p = p or 0.5
     self.train = true
-    -- version 2 scales output during training instead of evaluation
     if self.p >= 1 or self.p < 0 then
         error('<RandomMask> illegal percentage, must be 0 <= p < 1')
     end

@@ -1,9 +1,9 @@
+--- Author: Ji Gao ---
 local MaskLayer, Parent = torch.class('nn.MaskLayer', 'nn.Module')
 
 function MaskLayer:__init(size, mask)
     Parent.__init(self)
     self.train = true
-    -- version 2 scales output during training instead of evaluation
     self.mask = torch.Tensor(size)
     self.mask:copy(mask)
 end
@@ -21,7 +21,6 @@ function MaskLayer:updateOutput(input)
             self.output:cmul(self.mask)
         end
     end
-    -- print(self.output)
     return self.output
 end
 

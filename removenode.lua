@@ -1,5 +1,4 @@
 --- DeepCloak: Masking Deep Neural Network Models for Robustness Against Adversarial Samples ---
---- ---
 --- Code: Ji Gao 3/1/2017 ---
 require('optim')
 require('nn')
@@ -12,8 +11,10 @@ cmd:text('')
 cmd:text("Options")
 cmd:option("-gpu", 2, "use gpu num")
 cmd:option("-power",10,"Adversarial strength(epsilon in fast gradient method)")
-cmd:option("-model",'model_vgg_orig.t7', "Filename of original trained model")
+cmd:option("-model",'models/model_vgg_orig.t7', "Filename of original trained model")
+cmd:option("-dataset",'cifar10.t7', "Filename of original trained model")
 cmd:option("-layernum",54,"Number of layer modified")
+cmd:option("-std", 17.067521638107, "Std of the dataset (Used in the adversarial generation)")
 cmd:text()
 opt = cmd:parse(arg)
 cuda= true
@@ -30,16 +31,13 @@ if cuda then
 	-- torch.setdefaulttensortype('torch.CudaTensor')
 end
 
-local std = 17.067521638107
+local std = opt.std
 local loss = nn.CrossEntropyCriterion():cuda()
--- local dataset = torch.load('cifar_perturbedtrain10.dat')
--- local dataset = torch.load('cifar_perturbed10.dat')
-local dataset = torch.load('cifar10_combined.t7')
+local dataset = torch.load(opt.dataset)
 print(dataset)
-traindata = torch.Tensor(dataset.combinedtrain.data[1]:size()):copy(dataset.combinedtrain.data[1])
+traindata = dataset.trainData.data
 traindata = traindata:cuda()
--- print(traindata:size())
-trainlabels = dataset.combinedtrain.labels
+trainlabels = dataset.trainData.labels
 model = torch.load(opt.model)
 data = dataset.testData.data
 labels = dataset.testData.labels
@@ -112,16 +110,19 @@ end
 confusion:updateValids()
 print(confusion.totalValid)
 
-y = torch.sort(store)
+y = torch.sort(store,1,true)
 
 data_split = data:split(32,1)
 labels_split = labels:split(32,1)
 perturbed_split = perturbed:split(32,1)
 local res1,res2,nowmax
 nowmax = 0
-for i = 1,100 do
--- for i = 1,30 do 
-    mask_a = (torch.sign(store - y[featuresize*i*0.01] - 1e-8)-1) / -2
+for i = 0,30 do  --- i: Percentage of nodes masked ---
+    if i~=0 then
+        mask_a = (torch.sign(y[featuresize*i*0.01] - store - 1e-8) + 1) / 2
+    else
+        mask_a = torch.ones(featuresize)
+    end
     model:insert(nn.MaskLayer(featuresize,mask_a),layernum+1)
     model:evaluate()
     model:cuda()
