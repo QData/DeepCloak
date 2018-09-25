@@ -2,8 +2,15 @@
 
 ## Environment: Torch7 + CUDNN
 
+
+
 ## Reference 
 
+at Workshop of ICLR16: 
+
+### Title: DeepCloak: Masking Deep Neural Network Models for Robustness Against Adversarial Samples 
+
+### [URL: https://arxiv.org/abs/1702.06763](https://arxiv.org/abs/1702.06763)
 
 ```
 @article{GaoWQ17,
