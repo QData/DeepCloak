@@ -2,6 +2,26 @@
 
 ## Environment: Torch7 + CUDNN
 
+## Reference 
+
+
+```
+@article{GaoWQ17,
+  author    = {Ji Gao and
+               Beilun Wang and
+               Yanjun Qi},
+  title     = {DeepCloak: Masking {DNN} Models for robustness against adversarial
+               samples},
+  journal   = {CoRR},
+  volume    = {abs/1702.06763},
+  year      = {2017},
+  url       = {http://arxiv.org/abs/1702.06763},
+  archivePrefix = {arXiv},
+  eprint    = {1702.06763},
+  biburl    = {https://dblp.org/rec/bib/journals/corr/GaoWQ17},
+}
+```
+
 ## Example:
 
 th removenode.lua -dataset resources/cifar10.t7 -model resources/model_res-164.t7 -layernum 8
